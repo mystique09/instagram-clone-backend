@@ -3,7 +3,7 @@ const {
   model
 } = require('mongoose');
 const bcrypt = require('bcrypt');
-const hashPassword = require('../utils/updatePassword');
+const hashPassword = require('../utils/hashPassword');
 
 const UserSchema = new Schema({
   username: {
@@ -19,24 +19,30 @@ const UserSchema = new Schema({
     type: String,
     default: 'Normal'
     }
+  }, {
+    timeStamps: true
   });
 
-  UserSchema.methods.comparePassword = function(candidatePass, hashedPass, cb) {
-    bcrypt.compare(candidatePass, hashedPass, function(error, result) {
-      if (error)return cb(error, false);
-      return cb(null, result)
-    });
-  }
-  
+  UserSchema.methods.comparePassword = async function(candidatePass, hashedPass, cb) {
+    try {
+      const isMatch = await bcrypt.compare(candidatePass,
+        hashedPass);
+        
+      return cb(null, isMatch);
+    } catch (e) {
+      return cb(e, null);
+    }
+  };
+
   UserSchema.pre('save', function(next) {
     const user = this;
 
-    hashPassword(user.password, function(error, hashedPassword){
-      if(error) throw error;
-      
+    hashPassword(user.password, function(error, hashedPassword) {
+      if (error) throw error;
+
       user.password = hashedPassword;
       next();
     });
-  })
-
+  });
+  
   module.exports = model('User', UserSchema);

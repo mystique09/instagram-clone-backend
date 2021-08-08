@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 5000;
 /* IMPORT OTHER ROUTES  */
 const userRoute = require('./routes/user.route');
 const authRoute = require('./routes/auth.route');
+const postRoute = require('./routes/post.route');
 
 mongoose.connect(MONGO_URL, {
   useNewUrlParser: true,
@@ -35,6 +36,7 @@ app.use(express.urlencoded({
 
 app.use('/user', userRoute);
 app.use('/auth', authRoute);
+app.use('/post', postRoute);
 
 app.get('/', (req, res)=> {
   res.send('index');

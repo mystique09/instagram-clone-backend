@@ -10,6 +10,17 @@ router.get('/', authUser, async function(req, res) {
   });
 });
 
+router.get('/:id', async function(req, res){
+  const {id} = req.params;
+  
+  try{
+    const user = await User.findOne({username: id});
+    return res.json({user})
+  }catch(e){
+    return res.json({error: e.message});
+  }
+})
+
 router.delete('/', authUser, async function(req, res) {
   const {_id} = req.user;
   

@@ -1,7 +1,11 @@
 const express = require('express')
-const app = express()
 const cors = require('cors');
 const mongoose = require('mongoose');
+
+/* IMPORT OTHER ROUTES  */
+const userRoute = require('./routes/user.route');
+const authRoute = require('./routes/auth.route');
+const postRoute = require('./routes/post.route');
 
 /* DOTENV CONFIG FOR ENVIRONMENT VARIABLES */
 require('dotenv').config();
@@ -10,10 +14,7 @@ require('dotenv').config();
 const MONGO_URL = process.env.MONGO_URL;
 const PORT = process.env.PORT || 5000;
 
-/* IMPORT OTHER ROUTES  */
-const userRoute = require('./routes/user.route');
-const authRoute = require('./routes/auth.route');
-const postRoute = require('./routes/post.route');
+const app = express()
 
 mongoose.connect(MONGO_URL, {
   useNewUrlParser: true,

@@ -35,12 +35,10 @@ const UserSchema = new Schema({
   };
 
   UserSchema.pre('save', function(next) {
-    const user = this;
-
-    hashPassword(user.password, function(error, hashedPassword) {
+    hashPassword(this.password, function(error, hashedPassword) {
       if (error) throw error;
 
-      user.password = hashedPassword;
+      this.password = hashedPassword;
       next();
     });
   });

@@ -9,7 +9,8 @@ const PostSchema = new Schema({
   },
   author: {
     type: Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    required: true
   },
   image: {
     type: String

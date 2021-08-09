@@ -4,9 +4,9 @@ const router = require('express').Router();
 const postController = require('../controllers/post.controller');
 
 /* MIDDLEWARE, LOGIN REQUIRED */
-const authUser = require('../utils/authUser');
+const authUser = require('../middlewares/authUser');
 
-router.get('/', postController.getAllPost);
+router.get('/', authUser, postController.getAllPost);
 
 router.get('/:id', authUser, postController.getPost);
 

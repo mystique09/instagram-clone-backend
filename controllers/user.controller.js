@@ -3,8 +3,10 @@ const User = require('../models/user.model');
 async function getUsers(req, res) {
   try {
     const users = await User.find().select('username role').limit(5);
+    const {accessToken} = req;
     return res.json({
-      users
+      users,
+      accessToken
     });
   } catch (e) {
     return res.json({error: e.message});
@@ -30,7 +32,7 @@ async function deleteUser(req, res) {
       _id
     });
     
-    if(!isDeleted) return res.status(404).json({error: 'Invalid account.'});
+    if(!isDeleted) return res.status(403).json({error: 'Invalid account.'});
     
     return res.status(200).json({success: 'Account sucfessfuly deleted.'});
   } catch (e) {

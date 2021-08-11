@@ -4,7 +4,6 @@ const User = require('../models/user.model');
 /* UTILITY */
 const hashPassword = require('../utils/hashPassword');
 const assignAccessToken = require('../utils/assignAccessToken');
-const assignRefreshToken = require('../utils/assignRefreshToken');
 
 async function signUp(req, res){
   const {username, password} = req.body;
@@ -46,8 +45,7 @@ async function signIn(req, res){
     
     try {
       const accessToken = await assignAccessToken({username: user.username, role: user.role, _id: user._id});
-      const refreshToken = await assignRefreshToken({username: user.username, role: user.role, _id: user._id});
-      res.cookie('refreshToken', refreshToken, {httpOnly: true, maxAge: 9000, secure: true});
+      
       return res.status(200).json({accessToken});
     } catch (e) {
       return res.status(403).json({error: e.message});
@@ -55,9 +53,4 @@ async function signIn(req, res){
   });
 }
 
-async function signOut(req, res){
-  res.clearCookie('refreshToken');
-  return res.status(403).json({message: 'Logged out.'});
-}
-
-module.exports = {signUp, signIn, signOut};
+module.exports = {signUp, signIn};

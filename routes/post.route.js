@@ -2,7 +2,7 @@ const router = require('express').Router();
 const authUser = require('../middlewares/authUser');
 const postController = require('../controllers/post.controller');
 
-router.get('/', authUser, postController.getAllPost);
+router.get('/', postController.getAllPost);
 
 router.get('/:id', authUser, postController.getPost);
 

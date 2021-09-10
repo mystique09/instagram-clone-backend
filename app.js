@@ -11,7 +11,7 @@ const postRoute = require('./routes/post.route');
 require('dotenv').config();
 
 /* ENVIRONMENT VARIABLES */
-const MONGO_URL = process.env.MONGO_URL;
+const MONGO_URL = process.env.MONGO_URL_PROD;
 const PORT = process.env.PORT || 5000;
 
 const app = express()

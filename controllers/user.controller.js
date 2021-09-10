@@ -17,7 +17,7 @@ async function getUserById(req, res){
   const {id} = req.params;
   
   try{
-    const user = await User.findOne({username: id});
+    const user = await User.findOne({_id: id});
     return res.json({user})
   }catch(e){
     return res.json({error: e.message});
@@ -40,8 +40,30 @@ async function deleteUser(req, res) {
   }
 }
 
+async function updateUsername(req, res){
+  const {newUsername} = req.body;
+  const {_id} = req.user;
+
+  try{
+
+    if(!newUsername){
+      throw new Error("Provide a new username");
+    }
+
+    const userUpdate = await User.findByIdAndUpdate(_id, {username: newUsername}, {new: true});
+
+    if(userUpdate){
+      return res.status(200).json({message: `User updated.`});
+    }
+
+  }catch(e){
+    return res .json({error: e.message});
+  }
+}
+
   module.exports = {
     getUsers,
     getUserById,
-    deleteUser
+    deleteUser,
+    updateUsername
   }

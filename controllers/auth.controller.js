@@ -41,7 +41,7 @@ async function signIn(req, res){
   user.comparePassword(password, user.password, async function(error, isMatch){
     if(error)throw error;
     
-    if(!isMatch)return res.json({error: 'Username or password is incorrect.'});
+    if(!isMatch)return res.status(402).json({error: 'Username or password is incorrect.'});
     
     try {
       const accessToken = await assignAccessToken({username: user.username, role: user.role, _id: user._id});

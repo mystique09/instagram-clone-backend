@@ -1,4 +1,5 @@
 const User = require('../models/user.model');
+const Post = require('../models/post.model');
 
 async function getUsers(req, res) {
   try {
@@ -17,7 +18,7 @@ async function getUserById(req, res){
   const {id} = req.params;
   
   try{
-    const user = await User.findOne({_id: id});
+    const user = await User.findOne({_id: id}).select('username _id role');
     return res.json({user})
   }catch(e){
     return res.json({error: e.message});
@@ -61,9 +62,21 @@ async function updateUsername(req, res){
   }
 }
 
+async function getAllUserPost(req, res){
+  const {id} = req.user;
+
+  try {
+    const usersPost = await Post.find().where({author: id});
+    return res.json({usersPost});
+  }catch(e){
+    return res.status(401).json({error: e.message})
+  }
+}
+
   module.exports = {
     getUsers,
     getUserById,
     deleteUser,
-    updateUsername
+    updateUsername,
+    getAllUserPost
   }

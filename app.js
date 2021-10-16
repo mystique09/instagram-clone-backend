@@ -11,7 +11,7 @@ const postRoute = require('./routes/post.route');
 require('dotenv').config();
 
 /* ENVIRONMENT VARIABLES */
-const MONGO_URL = process.env.MONGO_URL_PROD;
+const MONGO_URL = process.env.MONGO_URL;
 const PORT = process.env.PORT || 5000;
 
 const app = express()
@@ -24,7 +24,7 @@ mongoose.connect(MONGO_URL, {
 });
 
 mongoose.connection.on('open', function(error) {
-  if (error)throw error;
+  if (error)throw new Error("Cannot connect to database!");
   console.log('Database connected!');
 })
 

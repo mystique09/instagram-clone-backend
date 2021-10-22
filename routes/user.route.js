@@ -8,6 +8,10 @@ router.get('/:id', authUser, userController.getUserById);
 
 router.get('/:id/posts', authUser, userController.getAllUserPost);
 
+router.get('/followers', authUser, userController.getFollowers);
+
+router.post('/followers/add', authUser, userController.addFollower);
+
 router.delete('/delte/:id', authUser, userController.deleteUser);
 
 router.patch('/update-username', authUser, userController.updateUsername);

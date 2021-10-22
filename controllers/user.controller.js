@@ -3,7 +3,7 @@ const Post = require('../models/post.model');
 
 async function getUsers(req, res) {
   try {
-    const users = await User.find().select('username role').limit(5);
+    const users = await User.find().select('username role followers following likes').limit(5);
     const {accessToken} = req;
     return res.json({
       users,
@@ -18,7 +18,7 @@ async function getUserById(req, res){
   const {id} = req.params;
   
   try{
-    const user = await User.findOne({_id: id}).select('username _id role');
+    const user = await User.findOne({_id: id}).select('username role followers following likes').populate('followers', 'username role').limit(5);
     return res.json({user})
   }catch(e){
     return res.json({error: e.message});
@@ -73,10 +73,20 @@ async function getAllUserPost(req, res){
   }
 }
 
+async function getFollowers(req, res) {
+  return res.json({data: []});
+}
+
+async function addFollower(req, res) {
+  return res.json({data: 'Test Data.'});
+}
+
   module.exports = {
     getUsers,
     getUserById,
     deleteUser,
     updateUsername,
-    getAllUserPost
+    getAllUserPost,
+    getFollowers,
+    addFollower
   }

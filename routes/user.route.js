@@ -6,6 +6,8 @@ router.get('/', userController.getUsers);
 
 router.get('/:id', authUser, userController.getUserById);
 
+router.get('/:id/posts', authUser, userController.getAllUserPost);
+
 router.delete('/delte/:id', authUser, userController.deleteUser);
 
 router.patch('/update-username', authUser, userController.updateUsername);

@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-test('users', async ()=> {
+test('should return all user', async ()=> {
     const response = await axios('http://localhost:5000/users');
     expect(await response.status).toBe(200)
 })

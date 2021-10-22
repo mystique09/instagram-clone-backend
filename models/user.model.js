@@ -2,7 +2,7 @@ const {
   Schema,
   model
 } = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const hashPassword = require('../utils/hashPassword');
 
 const UserSchema = new Schema({
@@ -18,8 +18,8 @@ const UserSchema = new Schema({
   role: {
     type: String,
     default: 'Normal'
-    }
-  }, {
+  }
+}, {
     timeStamps: true
   });
 

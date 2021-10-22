@@ -73,20 +73,26 @@ async function getAllUserPost(req, res){
   }
 }
 
-async function getFollowers(req, res) {
-  return res.json({data: []});
-}
-
 async function addFollower(req, res) {
-  return res.json({data: 'Test Data.'});
+  const {_id} = req.user;
+  const {id} = req.body;
+
+  try {
+    const user = await User.findById(id).select('username role followers following');
+    user.followers.push(_id);
+    await user.save();
+
+    return res.status(200).json({message: `New follower added to ${_id}`});
+  } catch(e) {
+    return res.status(500).json({error: e.message});
+  }
 }
 
-  module.exports = {
+module.exports = {
     getUsers,
     getUserById,
     deleteUser,
     updateUsername,
     getAllUserPost,
-    getFollowers,
     addFollower
-  }
+}

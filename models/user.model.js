@@ -18,10 +18,20 @@ const UserSchema = new Schema({
   role: {
     type: String,
     default: 'Normal'
+  },
+  followers: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  following: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  likes: {
+    type: Number,
+    default: 0
   }
-}, {
-    timeStamps: true
-  });
+});
 
   UserSchema.methods.comparePassword = async function(candidatePass, hashedPass, cb) {
     try {

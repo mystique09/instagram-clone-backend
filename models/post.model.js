@@ -4,9 +4,6 @@ const PostSchema = new Schema({
   title: {
     type: String
   },
-  description: {
-    type: String
-  },
   author: {
     type: Types.ObjectId,
     ref: 'User',
@@ -14,6 +11,10 @@ const PostSchema = new Schema({
   },
   image: {
     type: String
+  },
+  likes: {
+    type: Number,
+    default: 0
   }
 });
 

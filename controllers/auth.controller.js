@@ -25,7 +25,7 @@ async function signUp(req, res){
       return res.status(200).json({success: 'Account added.'});
     }
   } catch (e) {
-    return res.json({error: e.message});
+    return res.status(500).json({error: e.message});
   }
 }
 
@@ -36,12 +36,12 @@ async function signIn(req, res){
   
   const user = await User.findOne({username});
   
-  if(!user)return res.json({error: `User doesn't exist!`});
+  if(!user)return res.status(400).json({error: `User doesn't exist!`});
   
   user.comparePassword(password, user.password, async function(error, isMatch){
     if(error)throw error;
     
-    if(!isMatch)return res.status(402).json({error: 'Username or password is incorrect.'});
+    if(!isMatch)return res.status(400).json({error: 'Username or password is incorrect.'});
     
     try {
       const accessToken = await assignAccessToken({username: user.username, role: user.role, _id: user._id});

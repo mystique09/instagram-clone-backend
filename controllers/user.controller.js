@@ -1,5 +1,6 @@
 const User = require('../models/user.model');
 const Post = require('../models/post.model');
+const axios = require("axios");
 
 async function getUsers(req, res) {
   try {
@@ -18,7 +19,7 @@ async function getUserById(req, res){
   const {id} = req.params;
   
   try{
-    const user = await User.findOne({_id: id}).select('username role followers following likes').populate('followers', 'username role').limit(5);
+    const user = await User.findOne({_id: id}).select('username role followers following likes').populate('followers', '_id username role').limit(5);
     return res.json({user})
   }catch(e){
     return res.json({error: e.message});
@@ -41,29 +42,34 @@ async function deleteUser(req, res) {
   }
 }
 
-async function updateUsername(req, res){
-  const {newUsername} = req.body;
+async function updateUser(req, res){
+  const {newUserData} = req.body;
   const {_id} = req.user;
-
-  try{
-
-    if(!newUsername){
-      throw new Error("Provide a new username");
-    }
-
-    const userUpdate = await User.findByIdAndUpdate(_id, {username: newUsername}, {new: true});
-
-    if(userUpdate){
+  
+  if(!newUserData){
+    return res.status(402).json({error: "Missing fields!"});
+  }
+  
+  try {
+    const user = await User.findById({_id}).select('username email password');
+    
+    user.username = newUserData.username || user.username;
+    user.password = newUserData.password || user.password;
+    user.email = newUserData.email || user.email;
+    
+    const saved = await user.save();
+    
+    if(saved){
       return res.status(200).json({message: `User updated.`});
     }
 
   }catch(e){
-    return res .json({error: e.message});
+    return res.json({error: e.message});
   }
 }
 
 async function getAllUserPost(req, res){
-  const {id} = req.user;
+  const {_id} = req.user;
 
   try {
     const usersPost = await Post.find().where({author: id});
@@ -92,7 +98,7 @@ module.exports = {
     getUsers,
     getUserById,
     deleteUser,
-    updateUsername,
+    updateUser,
     getAllUserPost,
     addFollower
 }

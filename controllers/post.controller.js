@@ -80,4 +80,33 @@ async function deletePost(req, res){
   }
 }
 
-module.exports = {getPost, getAllPost, addNewPost, editPost, deletePost};
+async function likePost(req, res) {
+  const {postId} = req.params;
+  const {_id} = req.user;
+  
+  if(!postId){
+    return res.status(402).json({error: "Post id is missing"});
+  }
+  if(postId.length < 24){
+    return res.status(404).json({error: "Invalid id."});
+  }
+  
+  try {
+    const post = await Post.findById({_id: postId});
+    if(!post){
+      return res.status(404).json({error: "Post not found."});
+    }
+    if(post.likes.includes(_id)){
+      return res.status(200).json({message: "You already liked the post."});
+    }
+    post.likes.push(_id);
+    const saved = await post.save();
+    if(saved){
+      return res.status(200).json({message: "You liked the post."});
+    }
+  } catch (e) {
+    return res.status(500).json({error: e.message});
+  }
+}
+
+module.exports = {getPost, getAllPost, addNewPost, editPost, deletePost, likePost};

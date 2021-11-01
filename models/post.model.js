@@ -2,7 +2,12 @@ const {Schema, Schema: {Types}, model} = require('mongoose');
 
 const PostSchema = new Schema({
   title: {
-    type: String
+    type: String,
+    required: ["Title is required.", true]
+  },
+  description: {
+    type: String,
+    required: ["Description is required.", true]
   },
   author: {
     type: Types.ObjectId,
@@ -12,10 +17,11 @@ const PostSchema = new Schema({
   image: {
     type: String
   },
-  likes: {
-    type: Number,
-    default: 0
-  }
+  likes: [{
+    type: Types.ObjectId,
+    default: [],
+    ref: 'User'
+  }]
 });
 
 const Post = model('Post', PostSchema);

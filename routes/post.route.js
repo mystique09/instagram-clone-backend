@@ -10,6 +10,8 @@ router.post('/edit/:id', authUser, postController.editPost);
 
 router.post('/add', authUser, postController.addNewPost);
 
+router.post('/like/:postId', authUser, postController.likePost);
+
 router.delete('/delete/:id', authUser, postController.deletePost);
 
 module.exports = router;

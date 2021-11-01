@@ -12,6 +12,6 @@ router.post('/followers', authUser, userController.addFollower);
 
 router.delete('/delte/:id', authUser, userController.deleteUser);
 
-router.patch('/update-username', authUser, userController.updateUsername);
+router.post('/update', authUser, userController.updateUser);
 
 module.exports = router;
